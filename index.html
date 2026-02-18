@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+
+</style>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eye Artifact v2 - 顏色聖器</title>
+  <style>
+    :root {
+      --blue-glow: #00eaff;
+      --gold: #1BCDFF;
+      --purple-neon: #d000ff;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at center, rgba(0,10,40,0.3), rgba(0,0,0,1)),
+                  url("eye2.png") center/cover no-repeat fixed;
+      background-blend-mode: multiply;
+      color: #e0ffff;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 你加嘅加強版 CSS */
+    .core-eye {
+      animation: eye-breathe 8s ease-in-out infinite alternate;
+    }
+    @keyframes eye-breathe {
+      0% { box-shadow: 0 0 140px var(--blue-glow), inset 0 0 90px #001f4d; }
+      100% { box-shadow: 0 0 300px var(--blue-glow), 0 0 500px #00ffff44, inset 0 0 120px #001f4d; }
+    }
+    .crystal:hover {
+      transform: scale(2.2) translateY(-20px) !important;
+      box-shadow: 0 0 120px var(--blue-glow), 0 0 200px #ffffff88 !important;
+      transition: all 0.3s ease;
+    }
+
+    /* 原本全部 CSS（我已經整合好） */
+    .artifact { position: relative; width: 580px; height: 580px; perspective: 1400px; }
+    .core-eye { position: absolute; top: 43%; left: 50%; width: 300px; height: 300px; transform: translate(-50%, -50%); background: radial-gradient(circle at 35% 35%, #ffffff33, #001144dd, #000033ee); border-radius: 50%; border: 14px solid var(--gold); box-shadow: 0 0 140px var(--blue-glow), inset 0 0 90px #001f4d, inset 40px 40px 120px #000; cursor: pointer; transition: all 0.35s ease; z-index: 10; }
+    .core-eye:hover { box-shadow: 0 0 240px var(--blue-glow), 0 0 360px #00ffff55; transform: translate(-50%, -50%) scale(1.08) rotate(4deg); }
+    .core-eye:active { transform: translate(-50%, -50%) scale(0.94); }
+    .pupil { position: absolute; top: 50%; left: 50%; width: 120px; height: 120px; background: radial-gradient(circle, #000d44, #00051a); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: inset 0 0 50px #000; transition: transform 0.25s ease-out; }
+    .highlight { position: absolute; top: 22%; left: 28%; width: 45px; height: 45px; background: white; border-radius: 50%; opacity: 0.65; box-shadow: 0 0 40px white; }
+    .petals { position: absolute; inset: 0; animation: rotate-petals 50s linear infinite; }
+    .petal { position: absolute; inset: 0; background: conic-gradient(from 90deg, transparent 0deg, var(--gold) 20deg, transparent 45%); opacity: 0.45; filter: blur(10px); animation: breathe-petal 14s ease-in-out infinite alternate; }
+    .petal:nth-child(1) { transform: rotate(0deg); }
+    .petal:nth-child(2) { transform: rotate(72deg); }
+    .petal:nth-child(3) { transform: rotate(144deg); }
+    .petal:nth-child(4) { transform: rotate(216deg); }
+    .petal:nth-child(5) { transform: rotate(288deg); }
+    @keyframes rotate-petals { to { transform: rotate(360deg); } }
+    @keyframes breathe-petal { 0% { opacity: 0.35; transform: scale(0.92); } 100% { opacity: 0.75; transform: scale(1.08); } }
+    .orbit { position: absolute; inset: 0; pointer-events: none; }
+    .crystal { position: absolute; width: 64px; height: 64px; border-radius: 50%; border: 6px solid var(--gold); box-shadow: 0 0 30px currentColor; cursor: pointer; transition: all 0.4s ease; animation: orbit 30s linear infinite; }
+    @keyframes orbit { from { transform: rotate(0deg) translateX(260px) rotate(0deg); } to { transform: rotate(360deg) translateX(260px) rotate(-360deg); } }
+    .info-panel { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); background: rgba(0,0,20,0.7); backdrop-filter: blur(15px); border: 1px solid var(--blue-glow); border-radius: 24px; padding: 1.4rem 3rem; text-align: center; box-shadow: 0 0 50px var(--blue-glow)44; min-width: 420px; font-size: 1.15rem; text-shadow: 0 0 12px var(--blue-glow); overflow: hidden; }
+    .info-panel::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(0,212,255,0.15), transparent); animation: scan 6s linear infinite; }
+    @keyframes scan { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+    .controls { position: absolute; top: 40px; left: 50%; transform: translateX(-50%); display: flex; gap: 1.8rem; }
+    .btn { background: linear-gradient(45deg, #00eaff, #d000ff); color: white; border: none; padding: 1rem 2rem; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 0 40px #00eaff77; transition: all 0.3s; }
+    .btn:hover { transform: translateY(-5px) scale(1.12); box-shadow: 0 0 80px #d000ffaa; }
+    .flash { position: fixed; inset: 0; background: var(--blue-glow); opacity: 0; pointer-events: none; transition: opacity 0.5s; z-index: 100; }
+    .flash.active { opacity: 0.25; }
+
+    /* 粒子容器 */
+    #particles { position: fixed; inset: 0; pointer-events: none; z-index: 5; opacity: 0; transition: opacity 1s; }
+    @keyframes float { 0% { transform: translateY(0) rotate(0deg); opacity: 0.8; } 100% { transform: translateY(-150vh) rotate(720deg); opacity: 0; } }
+  </style>
+</head>
+<body>
+
+<div class="flash" id="flash"></div>
+<div id="particles"></div>
+
+<div class="artifact">
+  <div class="petals">
+    <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  </div>
+
+  <div class="core-eye" id="eyeCore">
+    <div class="pupil" id="pupil"></div>
+    <div class="highlight"></div>
+  </div>
+
+  <div class="orbit" id="orbit"></div>
+
+  <div class="info-panel" id="info">
+    HEX: #00eaff<br>
+    撳藍眼 → 吸取顏色
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="generate">生成配色</button>
+    <button class="btn" id="exploreBtn">探索（粒子）</button>
+  </div>
+</div>
+
+<script>
+const eyeCore = document.getElementById('eyeCore');
+const pupil = document.getElementById('pupil');
+const info = document.getElementById('info');
+const orbit = document.getElementById('orbit');
+const flash = document.getElementById('flash');
+const particlesDiv = document.getElementById('particles');
+let crystals = [];
+let currentColor = '#00eaff';
+let particlesActive = false;
+
+// 簡單 ding 聲
+function playDing() {
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.15);
+  gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+  osc.connect(gain).connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.3);
+}
+
+function hexToRgb(hex) {
+  return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
+}
+
+function updateInfo(color) {
+  currentColor = color;
+  const [r,g,b] = hexToRgb(color);
+  info.innerHTML = `HEX: ${color.toUpperCase()}<br>RGB: ${r}, ${g}, ${b}`;
+  flash.classList.add('active');
+  setTimeout(() => flash.classList.remove('active'), 500);
+  eyeCore.style.animation = 'none';
+  eyeCore.offsetHeight;
+  eyeCore.style.animation = 'pulse 0.4s';
+}
+
+// 動態加入 pulse keyframes
+const styleSheet = document.createElement('style');
+styleSheet.textContent = `@keyframes pulse { 0%,100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.05); } }`;
+document.head.appendChild(styleSheet);
+
+function createCrystal(color, delay = 0) {
+  const angle = Math.random() * 360;
+  const crystal = document.createElement('div');
+  crystal.className = 'crystal';
+  crystal.style.background = color;
+  crystal.style.boxShadow = `0 0 30px ${color}`;
+  crystal.style.animationDelay = `-${delay}s`;
+  crystal.style.transform = `rotate(${angle}deg) translateX(0px) rotate(-${angle}deg)`;
+  crystal.style.opacity = '0';
+  crystal.style.transition = 'all 1.2s ease-out';
+  orbit.appendChild(crystal);
+  crystals.push(crystal);
+
+  setTimeout(() => {
+    crystal.style.opacity = '1';
+    crystal.style.transform = `rotate(${angle}deg) translateX(260px) rotate(-${angle}deg)`;
+  }, 100 + delay * 300);
+
+  if (crystals.length > 16) {
+    const old = crystals.shift();
+    old.style.opacity = '0';
+    setTimeout(() => old.remove(), 800);
+  }
+  crystal.onclick = () => updateInfo(color);
+}
+
+// 生成配色
+document.getElementById('generate').onclick = () => {
+  const baseHue = 200 + Math.random() * 60;
+  for (let i = 0; i < 8; i++) {
+    const hue = (baseHue + i * 45) % 360;
+    const sat = 90 + Math.random() * 10;
+    const color = `hsl(${hue}, ${sat}%, 60%)`;
+    setTimeout(() => createCrystal(color, i*0.25), i*300);
+  }
+  playDing();
+};
+
+// 眼藥水取色
+eyeCore.onclick = async () => {
+  if ('EyeDropper' in window) {
+    try {
+      const eye = new EyeDropper();
+      const { sRGBHex } = await eye.open();
+      updateInfo(sRGBHex);
+      createCrystal(sRGBHex);
+      playDing();
+    } catch (e) {
+      info.textContent = e.name === 'AbortError' ? '取色取消' : '取色失敗';
+    }
+  } else {
+    info.textContent = '瀏覽器未支援眼藥水';
+  }
+};
+
+// 探索掣 → 粒子模式
+document.getElementById('exploreBtn').onclick = () => {
+  particlesActive = !particlesActive;
+  if (particlesActive) {
+    particlesDiv.style.opacity = '0.6';
+    particlesDiv.innerHTML = '';
+    for (let i = 0; i < 80; i++) {
+      const p = document.createElement('div');
+      p.style.position = 'absolute';
+      p.style.width = '3px'; p.style.height = '3px';
+      p.style.background = `hsl(${Math.random()*360}, 100%, 70%)`;
+      p.style.borderRadius = '50%';
+      p.style.left = Math.random()*100 + 'vw';
+      p.style.top = Math.random()*100 + 'vh';
+      p.style.animation = `float ${5 + Math.random()*10}s linear infinite`;
+      p.style.boxShadow = '0 0 10px currentColor';
+      particlesDiv.appendChild(p);
+    }
+    info.innerHTML += '<br><small>粒子模式已開啟！✨</small>';
+  } else {
+    particlesDiv.style.opacity = '0';
+    setTimeout(() => particlesDiv.innerHTML = '', 1000);
+    info.innerHTML += '<br><small>粒子模式已關閉</small>';
+  }
+  playDing();
+};
+
+// 瞳孔跟隨
+document.addEventListener('mousemove', e => {
+  const rect = eyeCore.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  const dx = (e.clientX - cx) / 8;
+  const dy = (e.clientY - cy) / 8;
+  pupil.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+});
+
+// 初始化
+updateInfo(currentColor);
+for (let i = 0; i < 5; i++) createCrystal(`hsl(${200 + i*60}, 95%, 60%)`, i*2);
+</script>
+
+</body>
+</html>
+
+
+</body>
+</html>
